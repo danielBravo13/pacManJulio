@@ -2,11 +2,18 @@
 #include <allegro.h>
 
 void init();
+void motorJuego();
+void cargarMapa1(int matrizJuego[20][30]);
+void pintarMapa(int matrizJuego[20][30], BITMAP *buffer);
+
+
 int main(){
 	init();
+	motorJuego();
 	return 0;
 }
 END_OF_MAIN();
+
 void init(){
 
 	int depth, res,cancion;
@@ -29,16 +36,18 @@ void init(){
 } 
 
 void motorJuego(){
+	BITMAP *buffer = create_bitmap(960,660);
     int op=2;
     int matrizJuego[20][30];
     int pacManPos[2];
     pacManPos[0]=14;
     pacManPos[1]=14;
     cargarMapa1(matrizJuego);
-    pintarMapa(matrizJuego);
     do{
-        movimientoPacMan(matrizJuego,pacManPos);
-        pintarMapa(matrizJuego);
+    	pintarMapa(matrizJuego, buffer);
+        //movimientoPacMan(matrizJuego,pacManPos);
+        blit(buffer, screen, 0,0,0,0,960,660);
+        clear(buffer);
     }while(op==2);
     
 
@@ -75,5 +84,30 @@ void cargarMapa1(int matrizJuego[20][30]){
         }  
     }
 
+}
+
+void pintarMapa(int matrizJuego[20][30], BITMAP *buffer){
+	BITMAP *vectorMapa[10];
+	vectorMapa[0]= load_bitmap("CuerpoPacman_II.bmp", NULL);
+	vectorMapa[1]= load_bitmap("Bloques_7.bmp", NULL);
+	vectorMapa[2]= load_bitmap("PuntosChicos.bmp", NULL);
+	vectorMapa[3]= load_bitmap("PuntosGrandes.bmp", NULL);
+    for(int i=0;i<20;i++){
+        for(int j=0;j<30;j++){
+        	if(matrizJuego[i][j]==0){
+        		draw_sprite(buffer, vectorMapa[0], j*30, i*30+35);
+			}
+			else if(matrizJuego[i][j]==1){
+				draw_sprite(buffer, vectorMapa[1], j*30, i*30+35);
+			}
+			else if(matrizJuego[i][j]==4){
+				draw_sprite(buffer, vectorMapa[2], j*30, i*30+35);
+			}
+			else if(matrizJuego[i][j]==5){
+				draw_sprite(buffer, vectorMapa[3], j*30, i*30+35);
+			}
+			
+        }  
+    }
 }
 
