@@ -5,6 +5,7 @@ void init();
 void motorJuego();
 void cargarMapa1(int matrizJuego[20][30]);
 void pintarMapa(int matrizJuego[20][30], BITMAP *buffer);
+void movimientoPacMan(int matrizJuego[20][30], int posPacMan[2]);
 
 
 int main(){
@@ -67,7 +68,7 @@ void cargarMapa1(int matrizJuego[20][30]){
         {1,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,1},//7
         {1,4,1,1,1,4,1,4,1,1,1,1,4,1,1,1,1,4,1,1,1,1,4,1,4,1,1,1,4,1},//8
         {1,4,1,1,1,4,1,4,1,1,1,1,4,1,6,8,1,4,1,1,1,1,4,1,4,1,1,1,4,1},//9
-        {2,4,4,4,4,4,1,4,4,1,1,1,4,1,7,9,1,4,1,1,1,4,4,1,4,1,1,1,4,2},//10
+        {4,4,4,4,4,4,1,4,4,1,1,1,4,1,7,9,1,4,1,1,1,4,4,1,4,1,1,1,4,4},//10
         {1,4,1,1,1,4,1,1,4,4,4,4,4,1,1,1,1,4,4,4,4,4,1,1,4,1,1,1,4,1},//11
         {1,4,1,4,4,4,4,4,4,1,1,1,4,4,4,4,4,4,1,1,1,4,4,4,4,4,4,1,4,1},//12
         {1,4,1,4,1,1,4,1,1,1,1,1,4,1,1,1,1,4,1,1,1,1,1,4,1,1,4,1,4,1},//13
@@ -92,6 +93,7 @@ void pintarMapa(int matrizJuego[20][30], BITMAP *buffer){
 	vectorMapa[1]= load_bitmap("Bloques_7.bmp", NULL);
 	vectorMapa[2]= load_bitmap("PuntosChicos.bmp", NULL);
 	vectorMapa[3]= load_bitmap("PuntosGrandes.bmp", NULL);
+	vectorMapa[4]= load_bitmap("Espacio.bmp", NULL);
     for(int i=0;i<20;i++){
         for(int j=0;j<30;j++){
         	if(matrizJuego[i][j]==0){
@@ -106,8 +108,58 @@ void pintarMapa(int matrizJuego[20][30], BITMAP *buffer){
 			else if(matrizJuego[i][j]==5){
 				draw_sprite(buffer, vectorMapa[3], j*30, i*30+35);
 			}
+			else if(matrizJuego[i][j]==2){
+				draw_sprite(buffer, vectorMapa[4], j*30, i*30+35);
+			}
 			
         }  
     }
+}
+
+void movimientoPacMan(int matrizJuego[20][30], int posPacMan[2]){
+    
+    
+    if(key[KEY_W]){
+        if(matrizJuego[posPacMan[0]-1][posPacMan[1]]!=1){
+            matrizJuego[posPacMan[0]][posPacMan[1]]=2;
+            posPacMan[0]=posPacMan[0]-1;
+            matrizJuego[posPacMan[0]][posPacMan[1]]=0;
+        }   
+    }
+    else if(key[KEY_S]){
+        if(matrizJuego[posPacMan[0]+1][posPacMan[1]]!=1){
+            matrizJuego[posPacMan[0]][posPacMan[1]]=2;
+            posPacMan[0]=posPacMan[0]+1;
+            matrizJuego[posPacMan[0]][posPacMan[1]]=0;
+        }
+        
+    }
+    else if(key[KEY_D]){
+        if(posPacMan[0]==10 && posPacMan[1]==29){
+            matrizJuego[posPacMan[0]][posPacMan[1]]=2;
+            posPacMan[0]=10;
+            posPacMan[1]=0;
+            matrizJuego[posPacMan[0]][posPacMan[1]]=0;
+            
+        }
+        else if(matrizJuego[posPacMan[0]][posPacMan[1]+1]!=1){
+            matrizJuego[posPacMan[0]][posPacMan[1]]=2;
+            posPacMan[1]=posPacMan[1]+1;
+            matrizJuego[posPacMan[0]][posPacMan[1]]=0;
+        } 
+    }
+    else if(key[KEY_A]){
+        if(posPacMan[0]==10 && posPacMan[1]==0){
+            matrizJuego[posPacMan[0]][posPacMan[1]]=2;
+            posPacMan[0]=10;
+            posPacMan[1]=29;
+            matrizJuego[posPacMan[0]][posPacMan[1]]=0;    
+        }
+        else if(matrizJuego[posPacMan[0]][posPacMan[1]-1]!=1){
+            matrizJuego[posPacMan[0]][posPacMan[1]]=2;
+            posPacMan[1]=posPacMan[1]-1;
+            matrizJuego[posPacMan[0]][posPacMan[1]]=0;
+        }
+    }   
 }
 
