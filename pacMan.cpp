@@ -61,14 +61,12 @@ void motorJuego(){
         rest(VELOCIDAD);
         contRep++;
         if(contRep==100){
-        	fantasmaSalir(matrizJuego,orangeGhostPos,9);
-        	
+        	fantasmaSalir(matrizJuego,orangeGhostPos,9);	
 		}
-		if(contRep>=120){
+		if(contRep>=120 && contRep%5==0){
 			fantasmaNaranja(matrizJuego,orangeGhostPos);
 		}
     }while(op==2);
-    
 }
 
 void cargarMapa1(int matrizJuego[20][30]){
@@ -101,7 +99,6 @@ void cargarMapa1(int matrizJuego[20][30]){
             matrizJuego[i][j]=mapa[i][j];
         }  
     }
-
 }
 
 void pintarMapa(int matrizJuego[20][30], BITMAP *buffer){
@@ -199,49 +196,61 @@ void movimientoPacMan(int matrizJuego[20][30], int posPacMan[2]){
 void fantasmaNaranja(int matrizJuego[20][30], int orangeGhost[2]){
 	int movement;
 	
-	
-//	movement= rand()%4;
-//	//UP
-//	if(movement==0){
-//		if(matrizJuego[orangeGhost[0]-1][orangeGhost[1]]!=1){
-//			matrizJuego[orangeGhost[0]][orangeGhost[1]]=2; //replace
-//			orangeGhost[0]=orangeGhost[0]-1;
-//			matrizJuego[orangeGhost[0]][orangeGhost[1]]=9;			
-//		}		
-//	}
-//	//DOWN
-//	if(movement==1){
-//		if(matrizJuego[orangeGhost[0]+1][orangeGhost[1]]!=1){
-//			matrizJuego[orangeGhost[0]][orangeGhost[1]]=2; //replace
-//			orangeGhost[0]=orangeGhost[0]+1;
-//			matrizJuego[orangeGhost[0]][orangeGhost[1]]=9;			
-//		}		
-//	}
-//	//RIGHT
-//	if(movement==2){
-//		if(matrizJuego[orangeGhost[0]][orangeGhost[1]+1]!=1){
-//			matrizJuego[orangeGhost[0]][orangeGhost[1]]=2; //replace
-//			orangeGhost[1]=orangeGhost[1]+1;
-//			matrizJuego[orangeGhost[0]][orangeGhost[1]]=9;			
-//		}		
-//	}
-//	//LEFT
-//	if(movement==3){
-//		if(matrizJuego[orangeGhost[0]][orangeGhost[1]-1]!=1){
-//			matrizJuego[orangeGhost[0]][orangeGhost[1]]=2; //replace
-//			orangeGhost[1]=orangeGhost[1]-1;
-//			matrizJuego[orangeGhost[0]][orangeGhost[1]]=9;			
-//		}		
-//	}
+	//movement= rand()%4;
+	movement=3;
+	//UP
+	if(movement==0){
+		if(matrizJuego[orangeGhost[0]-1][orangeGhost[1]]!=1){
+			matrizJuego[orangeGhost[0]][orangeGhost[1]]=2; //replace
+			orangeGhost[0]=orangeGhost[0]-1;
+			matrizJuego[orangeGhost[0]][orangeGhost[1]]=9;			
+		}		
+	}
+	//DOWN
+	if(movement==1){
+		if(matrizJuego[orangeGhost[0]+1][orangeGhost[1]]!=1){
+			matrizJuego[orangeGhost[0]][orangeGhost[1]]=2; //replace
+			orangeGhost[0]=orangeGhost[0]+1;
+			matrizJuego[orangeGhost[0]][orangeGhost[1]]=9;			
+		}		
+	}
+	//RIGHT
+	if(movement==2){
+		if(orangeGhost[0]==10 && orangeGhost[1]==29){
+			matrizJuego[orangeGhost[0]][orangeGhost[1]]=2;
+			orangeGhost[0]=10;
+			orangeGhost[1]=0;
+			matrizJuego[orangeGhost[0]][orangeGhost[1]]=9;			
+		}
+		if(matrizJuego[orangeGhost[0]][orangeGhost[1]+1]!=1){
+			matrizJuego[orangeGhost[0]][orangeGhost[1]]=2; //replace
+			orangeGhost[1]=orangeGhost[1]+1;
+			matrizJuego[orangeGhost[0]][orangeGhost[1]]=9;			
+		}		
+	}
+	//LEFT
+	if(movement==3){
+		if(orangeGhost[0]==10 && orangeGhost[1]==0){
+			matrizJuego[orangeGhost[0]][orangeGhost[1]]=2;
+			orangeGhost[0]=10;
+			orangeGhost[1]=29;
+			matrizJuego[orangeGhost[0]][orangeGhost[1]]=9;			
+		}
+		if(matrizJuego[orangeGhost[0]][orangeGhost[1]-1]!=1){
+			matrizJuego[orangeGhost[0]][orangeGhost[1]]=2; //replace
+			orangeGhost[1]=orangeGhost[1]-1;
+			matrizJuego[orangeGhost[0]][orangeGhost[1]]=9;			
+		}		
+	}
 	
 }
 	
 void fantasmaSalir(int matrizJuego[20][30], int orangeGhost[2], int gNum){
 	if(gNum==9){
 		matrizJuego[orangeGhost[0]][orangeGhost[1]]=2;
-		orangeGhost[0]=8;
-		orangeGhost[1]=12;
-		matrizJuego[orangeGhost[0]][orangeGhost[1]]=9;
+		orangeGhost[0]=10;
+		orangeGhost[1]=1;
+		matrizJuego[orangeGhost[0]][orangeGhost[1]]=9;	
 	}
 	
 }	
