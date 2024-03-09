@@ -10,6 +10,7 @@ void pintarMapa(int matrizJuego[20][30], BITMAP *buffer);
 void movimientoPacMan(int matrizJuego[20][30], int posPacMan[2]);
 void fantasmaNaranja(int matrizJuego[20][30], int orangeGhost[2]);
 void fantasmaSalir(int matrizJuego[20][30], int orangeGhost[2], int gNum);
+void fruit1Position(int matrizJuego[20][30], int fruit1Pos[2]);
 
 
 int main(){
@@ -48,11 +49,13 @@ void motorJuego(){
     int matrizJuego[20][30];
     int pacManPos[2];
     int orangeGhostPos[2];
+    int fruit1Pos[2];
     orangeGhostPos[0]=10;
     orangeGhostPos[1]=15;
     pacManPos[0]=14;
     pacManPos[1]=14;
     cargarMapa1(matrizJuego);
+    fruit1Position(matrizJuego, fruit1Pos);
     do{
     	pintarMapa(matrizJuego, buffer);
         movimientoPacMan(matrizJuego,pacManPos);
@@ -108,10 +111,11 @@ void pintarMapa(int matrizJuego[20][30], BITMAP *buffer){
 	vectorMapa[2]= load_bitmap("PuntosChicos.bmp", NULL);
 	vectorMapa[3]= load_bitmap("PuntosGrandes.bmp", NULL);
 	vectorMapa[4]= load_bitmap("Espacio.bmp", NULL);
+	vectorMapa[5]= load_bitmap("Fruta_1.bmp", NULL);
 	vectorMapa[6]= load_bitmap("FantasmaBlinky_Abajo.bmp", NULL);
 	vectorMapa[8]= load_bitmap("FantasmaInky_Abajo.bmp", NULL);
 	vectorMapa[9]= load_bitmap("FantasmaClyde_Abajo.bmp", NULL);
-	vectorMapa[7]= load_bitmap("FantasmaPinky_Abajo.bmp", NULL);
+	vectorMapa[7]= load_bitmap("FantasmaPinky_Abajo.bmp", NULL);	
     for(int i=0;i<20;i++){
         for(int j=0;j<30;j++){
         	if(matrizJuego[i][j]==0){
@@ -140,6 +144,9 @@ void pintarMapa(int matrizJuego[20][30], BITMAP *buffer){
 			}
 			else if(matrizJuego[i][j]==7){
 				draw_sprite(buffer, vectorMapa[7], j*30, i*30+35);
+			}
+			else if(matrizJuego[i][j]==3){
+				draw_sprite(buffer, vectorMapa[5], j*30, i*30+35);
 			}
         }  
     }
@@ -193,11 +200,11 @@ void movimientoPacMan(int matrizJuego[20][30], int posPacMan[2]){
         }
     }   
 }
+
 void fantasmaNaranja(int matrizJuego[20][30], int orangeGhost[2]){
 	int movement;
 	
-	//movement= rand()%4;
-	movement=3;
+	movement= rand()%4;
 	//UP
 	if(movement==0){
 		if(matrizJuego[orangeGhost[0]-1][orangeGhost[1]]!=1){
@@ -248,12 +255,25 @@ void fantasmaNaranja(int matrizJuego[20][30], int orangeGhost[2]){
 void fantasmaSalir(int matrizJuego[20][30], int orangeGhost[2], int gNum){
 	if(gNum==9){
 		matrizJuego[orangeGhost[0]][orangeGhost[1]]=2;
-		orangeGhost[0]=10;
-		orangeGhost[1]=1;
+		orangeGhost[0]=7;
+		orangeGhost[1]=13;
 		matrizJuego[orangeGhost[0]][orangeGhost[1]]=9;	
 	}
 	
 }	
+
+void fruit1Position(int matrizJuego[20][30], int fruit1Pos[2]){
+	int startPosXFruit;
+	int startPosYFruit;
+		
+	do{
+		startPosXFruit = rand()%20;
+		startPosYFruit = rand()%30;
+	}
+	while(matrizJuego[startPosXFruit][startPosYFruit]!=4);
+	
+	matrizJuego[startPosXFruit][startPosYFruit]=3;
+}
 	
 	
 
