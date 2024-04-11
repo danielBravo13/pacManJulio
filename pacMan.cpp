@@ -8,7 +8,7 @@ void motorJuego();
 void cargarMapa1(int matrizJuego[20][30]);
 void pintarMapa(int matrizJuego[20][30], BITMAP *buffer);
 void movimientoPacMan(int matrizJuego[20][30], int posPacMan[2]);
-void fantasmaNaranja(int matrizJuego[20][30], int orangeGhost[2]);
+void fantasmaNaranja(int matrizJuego[20][30], int orangeGhost[2], int *save);
 void fantasmaSalir(int matrizJuego[20][30], int orangeGhost[2], int gNum);
 void fruit1Position(int matrizJuego[20][30], int fruit1Pos[2]);
 
@@ -50,6 +50,7 @@ void motorJuego(){
     int pacManPos[2];
     int orangeGhostPos[2];
     int fruit1Pos[2];
+    int saveObj;
     orangeGhostPos[0]=10;
     orangeGhostPos[1]=15;
     pacManPos[0]=14;
@@ -64,10 +65,11 @@ void motorJuego(){
         rest(VELOCIDAD);
         contRep++;
         if(contRep==100){
+        	saveObj=matrizJuego[7][13];
         	fantasmaSalir(matrizJuego,orangeGhostPos,9);	
 		}
 		if(contRep>=120 && contRep%5==0){
-			fantasmaNaranja(matrizJuego,orangeGhostPos);
+			fantasmaNaranja(matrizJuego,orangeGhostPos,&saveObj);
 		}
     }while(op==2);
 }
@@ -80,7 +82,7 @@ void cargarMapa1(int matrizJuego[20][30]){
         {1,5,4,4,4,4,4,4,4,4,4,4,4,4,1,1,4,4,4,4,4,4,4,4,4,4,4,4,5,1},//1
         {1,4,1,4,1,1,4,1,1,1,1,4,1,4,1,1,4,1,4,1,1,1,1,4,1,1,4,1,4,1},//2
         {1,4,1,4,1,1,4,1,1,4,4,4,1,4,4,4,4,1,4,4,4,1,1,4,1,1,4,1,4,1},//3
-        {1,4,1,4,1,1,4,4,4,4,1,4,1,4,1,1,4,1,4,1,4,4,4,4,1,1,4,1,4,1},//4
+        {1,4,1,4,1,1,4,4,4,4,1,4,1,3,1,1,4,1,4,1,4,4,4,4,1,1,4,1,4,1},//4
         {1,4,4,4,4,4,4,1,4,1,1,4,1,4,4,4,4,1,4,1,1,4,1,4,4,4,4,4,4,1},//5
         {1,4,1,1,4,1,1,1,4,4,1,4,1,4,1,1,4,1,4,1,4,4,1,1,1,4,1,1,4,1},//6
         {1,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,1},//7
@@ -201,22 +203,23 @@ void movimientoPacMan(int matrizJuego[20][30], int posPacMan[2]){
     }   
 }
 
-void fantasmaNaranja(int matrizJuego[20][30], int orangeGhost[2]){
-	int movement;
-	
-	movement= rand()%4;
+void fantasmaNaranja(int matrizJuego[20][30], int orangeGhost[2], int *save){
+	int movement=0;
+	//movement= rand()%4;
 	//UP
 	if(movement==0){
 		if(matrizJuego[orangeGhost[0]-1][orangeGhost[1]]!=1){
-			matrizJuego[orangeGhost[0]][orangeGhost[1]]=2; //replace
+			matrizJuego[orangeGhost[0]][orangeGhost[1]]=*save; //replace
+			*save=matrizJuego[orangeGhost[0]-1][orangeGhost[1]];
 			orangeGhost[0]=orangeGhost[0]-1;
-			matrizJuego[orangeGhost[0]][orangeGhost[1]]=9;			
-		}		
+			matrizJuego[orangeGhost[0]][orangeGhost[1]]=9;	
+		}
+							
 	}
 	//DOWN
 	if(movement==1){
 		if(matrizJuego[orangeGhost[0]+1][orangeGhost[1]]!=1){
-			matrizJuego[orangeGhost[0]][orangeGhost[1]]=2; //replace
+			matrizJuego[orangeGhost[0]][orangeGhost[1]]=4; //replace
 			orangeGhost[0]=orangeGhost[0]+1;
 			matrizJuego[orangeGhost[0]][orangeGhost[1]]=9;			
 		}		
@@ -224,13 +227,13 @@ void fantasmaNaranja(int matrizJuego[20][30], int orangeGhost[2]){
 	//RIGHT
 	if(movement==2){
 		if(orangeGhost[0]==10 && orangeGhost[1]==29){
-			matrizJuego[orangeGhost[0]][orangeGhost[1]]=2;
+			matrizJuego[orangeGhost[0]][orangeGhost[1]]=4;
 			orangeGhost[0]=10;
 			orangeGhost[1]=0;
 			matrizJuego[orangeGhost[0]][orangeGhost[1]]=9;			
 		}
 		if(matrizJuego[orangeGhost[0]][orangeGhost[1]+1]!=1){
-			matrizJuego[orangeGhost[0]][orangeGhost[1]]=2; //replace
+			matrizJuego[orangeGhost[0]][orangeGhost[1]]=4; //replace
 			orangeGhost[1]=orangeGhost[1]+1;
 			matrizJuego[orangeGhost[0]][orangeGhost[1]]=9;			
 		}		
@@ -238,13 +241,13 @@ void fantasmaNaranja(int matrizJuego[20][30], int orangeGhost[2]){
 	//LEFT
 	if(movement==3){
 		if(orangeGhost[0]==10 && orangeGhost[1]==0){
-			matrizJuego[orangeGhost[0]][orangeGhost[1]]=2;
+			matrizJuego[orangeGhost[0]][orangeGhost[1]]=4;
 			orangeGhost[0]=10;
 			orangeGhost[1]=29;
 			matrizJuego[orangeGhost[0]][orangeGhost[1]]=9;			
 		}
 		if(matrizJuego[orangeGhost[0]][orangeGhost[1]-1]!=1){
-			matrizJuego[orangeGhost[0]][orangeGhost[1]]=2; //replace
+			matrizJuego[orangeGhost[0]][orangeGhost[1]]=4; //replace
 			orangeGhost[1]=orangeGhost[1]-1;
 			matrizJuego[orangeGhost[0]][orangeGhost[1]]=9;			
 		}		
